@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}爱心水果订购{% endblock %}
+
+{% block head %}
+    <script type="text/javascript">
+        $(function(){
+            $('#nav-home').addClass('active');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="leaderboard">
+    <h1>清华大学学生三农学会爱心水果</h1>
+    <p>服务同学，服务三农</p>
+    <p><a class="btn btn-success btn-large" href="/price/">立即订购</a></p>
+</div>
+
+<div class="row">
+    <div class="span4">
+        <h2>水果</h2>
+        <p>同学日常消费的大众型水果：苹果、梨子、香蕉、橘子、橙子、柑子、柚子、猕猴桃、芒果、木瓜。</p>
+        <p><a class="btn btn-success btn-large" href="/price/">价目表</a></p>
+    </div>
+    <div class="span4">
+        <h2>团购</h2>
+        <p>我们汇总订单以后形成一定的量可以直接从新发地批发市场进货，价格相对便宜。</p>
+        <p><a class="btn btn-success btn-large" href="/price/">立即订购</a></p>
+    </div>
+    <div class="span4">
+        <h2>爱心</h2>
+        <p>每斤水果加收0.5-1元差价，赚得的盈余一部分用于捐赠给农民工子弟。</p>
+        <p><a class="btn btn-success btn-large" href="/info/">更多信息</a></p>
+    </div>
+</div>
+{% endblock %}

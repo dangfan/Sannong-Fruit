@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}购物车{% endblock %}
+
+{% block head %}
+    <script src="/static/jquery-spin.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        function calc() {
+            var sum = 0;
+            $('tbody tr:not(:last)').each(function(i, tr){
+                var cnt = $(tr).find('input').val(),
+                        price = parseFloat($(tr).find('.price').text().replace(/[^\.\d]/g, ''));
+                sum += price * cnt;
+            });
+            $('#amount').text(sum + '');
+        }
+        $(function(){
+            $('input').spin({min:1}).css('padding', '0').css('margin', '0').css('width', '50px');
+            $('.del').on('click', function(){
+                $('#myModal').modal();
+                $('#del').data('id', $(this).data('id'));
+            });
+            $('#del').on('click', function(){
+                window.location = '/cart/?del=' + $(this).data('id');
+            });
+            $('img').on('click', calc);
+            $('input').on('blur', calc);
+            calc();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% if fruits %}
+        <div class="well">
+            <form action="/submit/" method="POST">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for fruit in fruits %}
+                    <tr>
+                        <td>{{ fruit.name }}</td>
+                        {% with price_info=fruit.price_list.all|dictsortreversed:"date"|first %}
+                        <td class="price">{{ price_info.price }}</td>
+                        {% endwith %}
+                        <td><input type="text" value="1" name="num{{ forloop.counter }}" /></td>
+                        <td><a class="btn btn-danger del" data-id="{{ forloop.counter }}">删除</a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="4" style="text-align: right;">
+                            <span class="label label-info">总金额：￥<span id="amount"></span>元</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div class="row">
+                <div class="span1 offset10"><a class="btn btn-warning">下单</a></div>
+            </div>
+        </div>
+        <div class="modal hide fade" id="myModal">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>删除确认</h3>
+            </div>
+            <div class="modal-body">
+                <p>确定不够买此商品？</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn" id="del">是</a>
+                <a class="btn" data-dismiss="modal">否</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <h3>您尚未挑选商品。</h3>
+        </div>
+    {% endif %}
+{% endblock %}

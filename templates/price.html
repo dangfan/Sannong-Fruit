@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}价目表{% endblock %}
+
+{% block head %}
+    <script type="text/javascript">
+        $(function(){
+            $('#nav-price').addClass('active');
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <ul class="thumbnails">
+        {% for fruit in fruits %}
+            <li class="span3">
+                <div class="well">
+                    <img src="{{ fruit.picture.url }}" width="100%">
+                    <div class="container-fluid">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <h3>{{ fruit.name }}</h3>
+                            </div>
+                            <div class="span6">
+                                {% with price_info=fruit.price_list.all|dictsortreversed:"date"|first %}
+                                <span class="label label-important">{{ price_info.price }}</span>
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{ fruit.introduction }}</p>
+                    <div class="row-fluid">
+                        <a class="span10 btn btn-success" href="/buy/{{ fruit.id }}/" target="_blank">添加到购物车</a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}商品已成功加入购物车{% endblock %}
+
+{% block content %}
+    <div class="hero-unit">
+        <h2>商品已成功加入购物车，请在结算页面选择数量。</h2>
+        <p>
+            <a class="btn btn-success btn-large" href="/price/">
+                继续购物
+            </a>
+            <a class="btn btn-warning btn-large" href="/cart/">
+                去购物车并结算
+            </a>
+        </p>
+    </div>
+{% endblock %}
