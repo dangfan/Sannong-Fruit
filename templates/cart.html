@@ -16,25 +16,31 @@
             $('#amount').text(sum + '');
         }
         $(function(){
-            $('input').spin({min:1}).css('padding', '0').css('margin', '0').css('width', '50px');
+            $('input[type="text"]').spin({min:1}).css('padding', '0').css('margin', '0').css('width', '50px');
             $('.del').on('click', function(){
                 $('#myModal').modal();
                 $('#del').data('id', $(this).data('id'));
             });
             $('#del').on('click', function(){
-                window.location = '/cart/?del=' + $(this).data('id');
+                $('#delid').val($(this).data('id'));
+                $('form').submit();
             });
             $('img').on('click', calc);
             $('input').on('blur', calc);
+            $('#order').on('click', function() {
+                $('form').submit();
+            });
             calc();
         });
     </script>
 {% endblock %}
 
 {% block content %}
-    {% if fruits %}
+    {% if items %}
         <div class="well">
-            <form action="/submit/" method="POST">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="delid" name="del">
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -45,14 +51,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for fruit in fruits %}
+                    {% for item in items %}
                     <tr>
-                        <td>{{ fruit.name }}</td>
-                        {% with price_info=fruit.price_list.all|dictsortreversed:"date"|first %}
-                        <td class="price">{{ price_info.price }}</td>
-                        {% endwith %}
-                        <td><input type="text" value="1" name="num{{ forloop.counter }}" /></td>
-                        <td><a class="btn btn-danger del" data-id="{{ forloop.counter }}">删除</a></td>
+                        <td>{{ item.fruit.name }}</td>
+                        <td class="price">{{ item.price }}</td>
+                        <td><input type="text" value="{{ item.amount }}" name="num{{ item.fruit.id }}"></td>
+                        <td><a class="btn btn-danger del" data-id="{{ item.fruit.id }}">删除</a></td>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -64,7 +68,7 @@
                 </table>
             </form>
             <div class="row">
-                <div class="span1 offset10"><a class="btn btn-warning">下单</a></div>
+                <div class="span1 offset10"><a class="btn btn-warning" data-toggle="modal" href="#buyModal">下单</a></div>
             </div>
         </div>
         <div class="modal hide fade" id="myModal">
@@ -77,6 +81,19 @@
             </div>
             <div class="modal-footer">
                 <a class="btn" id="del">是</a>
+                <a class="btn" data-dismiss="modal">否</a>
+            </div>
+        </div>
+        <div class="modal hide fade" id="buyModal">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>确认提交</h3>
+            </div>
+            <div class="modal-body">
+                <p>由于水果的特殊性，订单提交后不能修改/删除，请确认是否提交订单。</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn" id="order">是</a>
                 <a class="btn" data-dismiss="modal">否</a>
             </div>
         </div>

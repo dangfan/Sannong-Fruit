@@ -1,5 +1,5 @@
 # coding:utf-8
-
+from django.contrib.auth.models import User
 from django.db import models
 
 class PriceInfo(models.Model):
@@ -18,3 +18,12 @@ class Fruit(models.Model):
     def __unicode__(self):
         return self.name
 
+class Order(models.Model):
+    user = models.ForeignKey(User)
+    date = models.DateField(auto_now_add=True)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items')
+    fruit = models.ForeignKey(Fruit, related_name='+', verbose_name=u'水果')
+    price = models.CharField(max_length=20, verbose_name=u'价格')
+    amount = models.IntegerField(verbose_name=u'数量')
