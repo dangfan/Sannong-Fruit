@@ -77,7 +77,7 @@ def buy_view(request, id):
 
 def news_view(request):
     return render_to_response('news.html', {
-        'fruits': Fruit.objects.all()
+        'newslist': Post.objects.order_by('-date')
     }, context_instance=RequestContext(request))
 
 def registration_view(request):

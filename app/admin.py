@@ -13,5 +13,9 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline,]
 
+class PostAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Fruit, FruitAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(Post, PostAdmin)

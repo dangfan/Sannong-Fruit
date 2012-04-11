@@ -22,8 +22,19 @@ class Order(models.Model):
     user = models.ForeignKey(User)
     date = models.DateField(auto_now_add=True)
 
+    def __unicode__(self):
+        return u'订单：%d - %s' % (self.id, self.user.username)
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items')
     fruit = models.ForeignKey(Fruit, related_name='+', verbose_name=u'水果')
     price = models.CharField(max_length=20, verbose_name=u'价格')
     amount = models.IntegerField(verbose_name=u'数量')
+
+class Post(models.Model):
+    title = models.CharField(max_length=30, verbose_name=u'标题')
+    content = models.TextField(verbose_name=u'正文')
+    date = models.DateField(auto_now_add=True, db_index=True)
+
+    def __unicode__(self):
+        return self.title

@@ -11,5 +11,14 @@
 {% endblock %}
 
 {% block content %}
-
+    {% for news in newslist %}
+        <div class="well">
+            <h2>{{ news.title }} <small>{{ news.date|date:"Y年n月j日" }}</small></h2>
+            {{ news.content|safe }}
+        </div>
+    {% empty %}
+        <div class="alert alert-info">
+            <h3>暂时没有动态。</h3>
+        </div>
+    {% endfor %}
 {% endblock %}
