@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^news/$', 'fruit.app.views.news_view'),
     url(r'^buy/(\d+)/$', 'fruit.app.views.buy_view'),
     url(r'^admin/', include(admin.site.urls)),
-    (r'^tinymce/', include('tinymce.urls')),
+#    (r'^tinymce/', include('tinymce.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()
